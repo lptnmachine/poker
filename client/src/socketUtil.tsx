@@ -13,7 +13,7 @@ const SocketContext = React.createContext<{
   gameState: undefined,
 })
 
-const gWebSocket = new WebSocket('ws://localhost:8080')
+const gWebSocket = new WebSocket(`ws://${window.location.hostname}:8080`)
 
 let gUserId: string
 
@@ -38,7 +38,9 @@ export const SocketProvider: React.FC = ({ children }) => {
       switch (data.type) {
         case 'register':
           setUserId(data.payload?.userId)
-          document.cookie = `id=${data.payload}`
+          if (data.payload?.userId) {
+            document.cookie = `id=${data.payload.userId}`
+          }
           break
         case 'stateUpdate':
           setGameState(data.payload?.gameState)
