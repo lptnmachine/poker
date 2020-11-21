@@ -118,10 +118,13 @@ wss.on('connection', (ws) => {
       case 'revealCard':
         const card = connections
           .find((conn) => conn.id.localeCompare(data.payload?.userId) === 0)
-          ?.player.cards.find((card) => card.id === data.payload)
+          ?.player.cards.find((card) => card.id === data.payload?.cardId)
         if (card) {
           revealedCardIds.push(data.payload?.cardId)
-          log(data.payload?.userId, `revealed a ${cardString(card)}`)
+          log(
+            data.payload?.userId,
+            `revealed a ${cardString(drawnCards.find((drawnCard) => drawnCard.id === card.id)!)}`,
+          )
         }
         break
 
